@@ -1,17 +1,13 @@
-
 # CUDA Matrix Multiplication Optimization (SGEMM)
 
 
 ## Objective
 Implement a CUDA-based SGEMM (Single-precision General Matrix Multiply) to explore CUDA programming models and optimize memory access patterns using shared memory and tiling techniques.
 
----
 
 ## Environment
 - **Hardware:** School server with NVIDIA RTX 2080 Ti GPU
 - **CUDA Version:** 11.0+
-
----
 
 ## Experiment Design
 
@@ -21,36 +17,12 @@ Implement a CUDA-based SGEMM (Single-precision General Matrix Multiply) to explo
 - **Limitation:** Redundant global memory accesses lead to low bandwidth utilization.
 
 ### Optimization Strategy
-<!-- 1. **Tiling & Shared Memory:** -->
    - Divide matrices into `TILE_WIDTH x TILE_WIDTH` blocks.
    - Load mini-sub-matrices fit to shared memory and registers to reduce global memory access.
    - Synchronize threads (`__syncthreads()`) after loading data to shared memory.
 
-<!-- 2. **Computation Flow:**
-   ```cpp
-   for (int m = 0; m < (N / TILE_WIDTH); ++m) {
-       // Load tiles into shared memory
-       s_a[threadIdx.y][threadIdx.x] = A[];
-       s_b[threadIdx.y][threadIdx.x] = B[];
-       __syncthreads();
-       
-       // Compute partial products
-       for (int k = 0; k < TILE_WIDTH; ++k) {
-           C_value += s_a[threadIdx.y][k] * s_b[k][threadIdx.x];
-       }
-       __syncthreads();
-   }
-   ```
-
---- -->
 
 ## Performance Results
-
-<!-- ### Test Configurations
-| Version          | Tile Size       | Matrix Sizes Tested | Metrics          |
-|------------------|-----------------|---------------------|------------------|
-| Baseline         | N/A             | 512, 1024, 2048     | GFLOPS, GB/s     |
-| Optimized        | 16x16, 32x32    | 512, 1024, 2048     | GFLOPS, GB/s     | -->
 
 ### Performance Comparison
 #### Baseline (GFLOPS/s)
@@ -70,7 +42,6 @@ Implement a CUDA-based SGEMM (Single-precision General Matrix Multiply) to explo
 2. **Tile Size Impact:** Larger tiles (32x32) show better performance due to increased parallelism.
 3. **Bandwidth Trend:** Bandwidth utilization decreases with larger matrix sizes in both versions.
 
----
 
 ## Conclusion
 - **Optimization Effectiveness:** Shared memory tiling significantly reduces global memory access latency.
